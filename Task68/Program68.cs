@@ -2,31 +2,51 @@
 m = 2, n = 3 -> A(m,n) = 9
 m = 3, n = 2 -> A(m,n) = 29*/
 
+
 // -------------------РАНЕЕ ИСПОЛЬЗОВАВШИЕСЯ МЕТОДЫ----------------------------------------------------------------------------
 int InputNumber(string qwerStr)//проверяет "численность"."Не выпускает" без ввода ЧИСЛА
-    {int num;
+{
+    int num;
     string? text;
-    while(true)
-        {
-            Console.WriteLine(qwerStr);
-            text=Console.ReadLine();
-           if(int.TryParse(text,out num)) break;
-           Console.WriteLine("Введено некорректное значение.Попробуйте еще раз"); 
-        }
-    return num;  
+    while (true)
+    {
+        Console.WriteLine(qwerStr);
+        text = Console.ReadLine();
+        if (int.TryParse(text, out num)) break;
+        Console.WriteLine("Введено некорректное значение.Попробуйте еще раз");
     }
+    return num;
+}
 //------------------------------------------------------------------------------------------------------
 int InputNumberWithFilter(string qwerStr, bool zeroEnable, bool negativEnable)//Пропускает положительные. 0 и отрицательные пропускает в соответствии со булевыми значениями zeroEnable,negativEnable
-    {int num;
-    while(true)
-        {
-            num=InputNumber(qwerStr);//проверяет "численность"."Не выпускает" без ввода ЧИСЛА
-           if(num>0 || num==0 && zeroEnable || num<0 && negativEnable) break;
-           Console.WriteLine("Введено не разрешенное значение.Попробуйте еще раз"); 
-        }
-    return num;  
+{
+    int num;
+    while (true)
+    {
+        num = InputNumber(qwerStr);//проверяет "численность"."Не выпускает" без ввода ЧИСЛА
+        if (num > 0 || num == 0 && zeroEnable || num < 0 && negativEnable) break;
+        Console.WriteLine("Введено не разрешенное значение.Попробуйте еще раз");
     }
-//------------------------------------------------------------------------------------------------------
+    return num;
+}
+//---------------------------МЕТОД С РЕКУРСИЕЙ----------------------------------------------------------------------------------
+int Ack(int m, int n)// Нужна предварительная проверка обоих параметров на неотрицательность
+{
+    if (m == 0)
+    {
+        return n + 1;
+    }
+    else if (m > 0 && n == 0)
+    {
+        return Ack(m - 1, 1);
+    }
+    else
+    {
+        return Ack(m - 1, Ack(m, n - 1));
+    }
+}
+
 // -------------------ОСНОВНАЯ ПРОГРАММА----------------------------------------------------------------------------
-int m=InputNumberWithFilter("Введите начальный элемент (число) :",false,false);
-int n=InputNumberWithFilter("Введите конечный элемент (число) :",false,false);
+int numM = InputNumberWithFilter("Введите начальный элемент (число) :", true, false);//(с проверкой на неотрицательность)
+int numN = InputNumberWithFilter("Введите конечный элемент (число) :", true, false);//(с проверкой на неотрицательность)
+System.Console.WriteLine($" Функция Аккермана= {Ack(numM, numN)}");
